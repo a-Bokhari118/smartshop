@@ -6,10 +6,16 @@ const Product = ({ product }) => {
   return (
     <Card
       className='my-3 p-3 rounded'
-      style={{ minHeight: '20rem', maxHeight: '30rem' }}
+      style={{
+        minHeight: '23rem',
+      }}
     >
       <Link to={`/product/${product._id}`}>
-        <Card.Img src={product.image} variant='top' />
+        <Card.Img
+          src={product.image}
+          variant='top'
+          style={{ height: '10rem', objectFit: 'contain' }}
+        />
       </Link>
       <Card.Body>
         <Link to={`/product/${product._id}`}>
