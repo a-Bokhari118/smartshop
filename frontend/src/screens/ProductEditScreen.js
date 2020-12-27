@@ -5,15 +5,17 @@ import { Form, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
+import Dropzone from 'react-dropzone';
 import { listProductDetails, updateProduct } from '../actions/productActions';
 
 import FormContainer from '../components/FormContainer';
 import { PRODUCT_UPDATE_RESET } from '../constants/productsConstants';
+
 const ProductEditScreen = ({ match, history }) => {
   const productId = match.params.id;
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState([]);
   const [brand, setBrand] = useState('');
   const [category, setCategory] = useState('');
   const [countInStock, setCountInStock] = useState(0);
@@ -39,7 +41,7 @@ const ProductEditScreen = ({ match, history }) => {
       } else {
         setName(product.name);
         setPrice(product.price);
-        setImage(product.image);
+
         setBrand(product.brand);
         setCategory(product.category);
         setCountInStock(product.countInStock);
@@ -64,10 +66,11 @@ const ProductEditScreen = ({ match, history }) => {
     );
   };
 
-  const uploadFileHandler = async (e) => {
-    const file = e.target.files[0];
+  const uploadFileHandler = async (files) => {
     const formData = new FormData();
-    formData.append('image', file);
+    for (let i = 0; i < files.length; i++) {
+      formData.append('image', files[i]);
+    }
     setUploading(true);
 
     try {
@@ -77,7 +80,13 @@ const ProductEditScreen = ({ match, history }) => {
         },
       };
       const { data } = await axios.post('/api/upload', formData, config);
-      setImage(data);
+      let arr = [];
+      for (let i = 0; i < data.length; i++) {
+        arr.push(data[i].path);
+      }
+      {
+        setImage(...image, arr);
+      }
       setUploading(false);
     } catch (error) {
       console.error(error);
@@ -109,7 +118,6 @@ const ProductEditScreen = ({ match, history }) => {
                 onChange={(e) => setName(e.target.value)}
               ></Form.Control>
             </Form.Group>
-
             <Form.Group controlId='price'>
               <Form.Label>Price</Form.Label>
               <Form.Control
@@ -119,24 +127,53 @@ const ProductEditScreen = ({ match, history }) => {
                 onChange={(e) => setPrice(e.target.value)}
               ></Form.Control>
             </Form.Group>
-
-            <Form.Group controlId='image'>
-              <Form.Label>Image</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Enter Image URL...'
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-              ></Form.Control>
-              <Form.File
-                id='image-file'
-                label='Choose File'
-                custom
-                onChange={uploadFileHandler}
-              ></Form.File>
-              {uploading && <Loader />}
-            </Form.Group>
-
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Dropzone
+                onDrop={uploadFileHandler}
+                multiple={true}
+                maxSize={800000000}
+              >
+                {({ getRootProps, getInputProps }) => (
+                  <div
+                    style={{
+                      width: '300px',
+                      height: '240px',
+                      border: '1px solid lightgray',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                    {...getRootProps()}
+                  >
+                    <input {...getInputProps()} multiple />
+                    <i className='fas fa-plus '></i>
+                  </div>
+                )}
+              </Dropzone>
+              <div
+                style={{
+                  width: '350px',
+                  height: '240px',
+                  display: 'flex',
+                  overflowX: 'scroll',
+                }}
+              >
+                {image.map((img, index) => (
+                  <div onClick key={index}>
+                    <img
+                      src={`/${img}`}
+                      alt='wowow'
+                      style={{
+                        minWidth: '300px',
+                        width: '300px',
+                        height: '240px',
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+            );
             <Form.Group controlId='brand'>
               <Form.Label>Brand</Form.Label>
               <Form.Control
@@ -146,7 +183,6 @@ const ProductEditScreen = ({ match, history }) => {
                 onChange={(e) => setBrand(e.target.value)}
               ></Form.Control>
             </Form.Group>
-
             <Form.Group controlId='countInStock'>
               <Form.Label>Count In Stock</Form.Label>
               <Form.Control
@@ -156,7 +192,6 @@ const ProductEditScreen = ({ match, history }) => {
                 onChange={(e) => setCountInStock(e.target.value)}
               ></Form.Control>
             </Form.Group>
-
             <Form.Group controlId='category'>
               <Form.Label>Category</Form.Label>
               <Form.Control
@@ -166,7 +201,6 @@ const ProductEditScreen = ({ match, history }) => {
                 onChange={(e) => setCategory(e.target.value)}
               ></Form.Control>
             </Form.Group>
-
             <Form.Group controlId='description'>
               <Form.Label>Description</Form.Label>
               <Form.Control
@@ -176,7 +210,6 @@ const ProductEditScreen = ({ match, history }) => {
                 onChange={(e) => setDescription(e.target.value)}
               ></Form.Control>
             </Form.Group>
-
             <Button type='submit' variant='primary'>
               Update
             </Button>
