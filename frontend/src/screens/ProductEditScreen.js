@@ -41,7 +41,7 @@ const ProductEditScreen = ({ match, history }) => {
       } else {
         setName(product.name);
         setPrice(product.price);
-
+        setImage(product.image);
         setBrand(product.brand);
         setCategory(product.category);
         setCountInStock(product.countInStock);
@@ -52,6 +52,7 @@ const ProductEditScreen = ({ match, history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+
     dispatch(
       updateProduct({
         _id: productId,
@@ -79,14 +80,14 @@ const ProductEditScreen = ({ match, history }) => {
           'Content-Type': 'multipart/form-data',
         },
       };
-      const { data } = await axios.post('/api/upload', formData, config);
       let arr = [];
+      const { data } = await axios.post('/api/upload', formData, config);
+
       for (let i = 0; i < data.length; i++) {
         arr.push(data[i].path);
       }
-      {
-        setImage(...image, arr);
-      }
+      setImage(arr);
+      console.log(image);
       setUploading(false);
     } catch (error) {
       console.error(error);
@@ -173,7 +174,7 @@ const ProductEditScreen = ({ match, history }) => {
                 ))}
               </div>
             </div>
-            );
+
             <Form.Group controlId='brand'>
               <Form.Label>Brand</Form.Label>
               <Form.Control

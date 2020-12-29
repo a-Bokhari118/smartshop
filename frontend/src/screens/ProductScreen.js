@@ -9,6 +9,7 @@ import {
   Button,
   Form,
 } from 'react-bootstrap';
+import ImageGallery from 'react-image-gallery';
 import Rating from '../components/Rating';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -33,6 +34,17 @@ const ProductScreen = ({ match, history }) => {
     success: successProductReview,
   } = useSelector((state) => state.productReviewCreate);
   const { userInfo } = useSelector((state) => state.userLogin);
+
+  const newImages = () => {
+    let arr = [];
+    product.image.map((item) =>
+      arr.push({
+        original: `/${item}`,
+        thumbnail: `/${item}`,
+      })
+    );
+    return arr;
+  };
 
   useEffect(() => {
     if (successProductReview) {
@@ -64,7 +76,7 @@ const ProductScreen = ({ match, history }) => {
         <>
           <Row>
             <Col md={6}>
-              <Image src={`/${product.image[0]}`} alt={product.name} fluid />
+              <ImageGallery items={newImages()} showPlayButton={false} />
               {console.log(product.image)}
             </Col>
             <Col md={3}>
@@ -79,9 +91,6 @@ const ProductScreen = ({ match, history }) => {
                   />
                 </ListGroup.Item>
                 <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
-                <ListGroup.Item>
-                  Description: {product.description}
-                </ListGroup.Item>
               </ListGroup>
             </Col>
             <Col md={3}>
@@ -140,7 +149,15 @@ const ProductScreen = ({ match, history }) => {
             </Col>
           </Row>
           <Row>
-            <Col md={6}>
+            <Col>
+              <ListGroup variant='flush'>
+                <h2>Description</h2>
+                <ListGroup.Item>{product.description}</ListGroup.Item>
+              </ListGroup>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6} className='py-3'>
               <h2>Reviews</h2>
               {product.reviews.length === 0 && <Message>No Reviews</Message>}
               <ListGroup variant='flush'>
