@@ -9,6 +9,7 @@ import {
   Button,
   Form,
 } from 'react-bootstrap';
+import ScrollTop from '../components/ScrollTop';
 import ImageGallery from 'react-image-gallery';
 import Rating from '../components/Rating';
 import { useDispatch, useSelector } from 'react-redux';
@@ -65,6 +66,7 @@ const ProductScreen = ({ match, history }) => {
   };
   return (
     <>
+      <ScrollTop />
       <Link className='btn btn-light my-3' to='/'>
         Go Back
       </Link>
