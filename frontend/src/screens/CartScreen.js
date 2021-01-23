@@ -45,7 +45,7 @@ const CartScreen = ({ match, location, history }) => {
             {cartItems.map((item) => (
               <ListGroup.Item key={item.product}>
                 <Row>
-                  <Col md={2}>
+                  <Col md={2} xs={2}>
                     <Image
                       src={`/${item.image[0]}`}
                       alt={item.name}
@@ -53,11 +53,13 @@ const CartScreen = ({ match, location, history }) => {
                       rounded
                     />
                   </Col>
-                  <Col md={3}>
+                  <Col md={3} xs={2}>
                     <Link to={`/product/${item.product}`}>{item.name}</Link>
                   </Col>
-                  <Col md={2}>{item.price}</Col>
-                  <Col md={2}>
+                  <Col md={2} xs={2}>
+                    {item.price}
+                  </Col>
+                  <Col md={2} xs={3}>
                     <Form.Control
                       as='select'
                       value={item.qty}
@@ -74,7 +76,7 @@ const CartScreen = ({ match, location, history }) => {
                       ))}
                     </Form.Control>
                   </Col>
-                  <Col md={2}>
+                  <Col md={2} xs={2}>
                     <Button
                       type='button'
                       variant='light'

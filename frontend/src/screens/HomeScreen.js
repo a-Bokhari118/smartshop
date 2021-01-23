@@ -20,7 +20,7 @@ const HomeScreen = ({ match }) => {
   return (
     <>
       {!keyword && <ProdcutCarousel />}
-      <h1>Latest Products</h1>
+      <h1 style={{ marginTop: '10px' }}>Latest Products</h1>
       {loading ? (
         <Loader />
       ) : error ? (

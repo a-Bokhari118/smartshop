@@ -135,7 +135,7 @@ const OrderScreen = ({ match, history }) => {
                   {order.orderItems.map((item, index) => (
                     <ListGroup.Item key={index}>
                       <Row>
-                        <Col md={1}>
+                        <Col md={1} xs={3}>
                           <Image
                             src={`/${item.image[0]}`}
                             alt={item.name}
@@ -148,7 +148,7 @@ const OrderScreen = ({ match, history }) => {
                             {item.name}
                           </Link>
                         </Col>
-                        <Col md={4}>
+                        <Col md={4} xs={2}>
                           {item.qty} x ${item.price} = ${item.qty * item.price}
                         </Col>
                       </Row>

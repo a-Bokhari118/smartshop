@@ -19,7 +19,15 @@ const Product = ({ product }) => {
       </Link>
       <Card.Body>
         <Link to={`/product/${product._id}`}>
-          <Card.Title as='div'>
+          <Card.Title
+            as='div'
+            style={{
+              whiteSpace: 'nowrap',
+              width: '200px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
             <strong>{product.name}</strong>
           </Card.Title>
         </Link>

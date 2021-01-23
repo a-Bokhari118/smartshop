@@ -5,6 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loader from './Loader';
 import Message from './Message';
 import { listTopProducts } from '../actions/productActions';
+import pp1 from '../pp1.jpg';
+import pp2 from '../pp2.png';
+import pp3 from '../pp3.png';
 const ProductCarousel = () => {
   const dispatch = useDispatch();
   const { products, loading, error } = useSelector(
@@ -20,18 +23,15 @@ const ProductCarousel = () => {
     <Message variant='danger'>{error}</Message>
   ) : (
     <Carousel pause='hover' className='bg-dark'>
-      {products.map((product) => (
-        <Carousel.Item key={product._id}>
-          <Link to={`/product/${product._id}`}>
-            <Image src={`/${product.image[0]}`} alt={product.name} fluid />
-            <Carousel.Caption className='carousel-caption'>
-              <h2>
-                {product.name} (${product.price})
-              </h2>
-            </Carousel.Caption>
-          </Link>
-        </Carousel.Item>
-      ))}
+      <Carousel.Item>
+        <Image src={pp1} alt='phone' />
+      </Carousel.Item>
+      <Carousel.Item>
+        <Image src={pp2} alt='phone2' />
+      </Carousel.Item>
+      <Carousel.Item>
+        <Image src={pp3} alt='phone2' />
+      </Carousel.Item>
     </Carousel>
   );
 };
